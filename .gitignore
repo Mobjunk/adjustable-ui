@@ -4,6 +4,8 @@ Adjustable UI/[Oo]bj/
 Adjustable UI/[Bb]uild/
 Adjustable UI/[Bb]uilds/
 Adjustable UI/Assets/AssetStoreTools*
+Adjustable UI/.idea/
+Adjustable UI/Logs/
 
 # Visual Studio cache directory
 .vs/

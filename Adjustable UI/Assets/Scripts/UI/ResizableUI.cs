@@ -5,20 +5,19 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(EventTrigger))]
 public class ResizableUI : MonoBehaviour
 {
-    [SerializeField] Rect screenRect;
-    [SerializeField] RectTransform parent;
-    [SerializeField] Type type;
+    UIComponent uiComponent;
+    
+    Rect screenRect;
+    RectTransform parent;
     EventTrigger eventTrigger;
-    Vector2 minimumDimmensions;
-    [SerializeField] Vector2 maximumDimmensions;
-
-    private SizeData sizeData;
+    SizeData sizeData;
+    
+    [SerializeField] Type type;
 
     private void Awake()
     {
+        uiComponent = GetComponentInParent<UIComponent>();
         parent = transform.parent.gameObject.GetComponent<RectTransform>();
-
-        minimumDimmensions = parent.sizeDelta;
 
         eventTrigger = GetComponent<EventTrigger>();
         eventTrigger.AddEventTrigger(OnDrag, EventTriggerType.Drag);
@@ -73,13 +72,13 @@ public class ResizableUI : MonoBehaviour
             if (horizontalEdge == RectTransform.Edge.Right)
             {
                 float inset = screenRect.width - parent.position.x - parent.pivot.x * parent.rect.width;
-                float size = Mathf.Clamp(parent.rect.width - ped.delta.x, minimumDimmensions.x, maximumDimmensions.x);
+                float size = Mathf.Clamp(parent.rect.width - ped.delta.x, uiComponent.minimumDimmensions.x, uiComponent.maximumDimmensions.x);
                 ResizeFrame((RectTransform.Edge)horizontalEdge, inset, size);
             }
             else
             {
                 float inset = parent.position.x - parent.pivot.x * parent.rect.width;
-                float size = Mathf.Clamp(parent.rect.width + ped.delta.x, minimumDimmensions.x, maximumDimmensions.x);
+                float size = Mathf.Clamp(parent.rect.width + ped.delta.x, uiComponent.minimumDimmensions.x, uiComponent.maximumDimmensions.x);
                 ResizeFrame((RectTransform.Edge)horizontalEdge, inset, size);
 
             }
@@ -89,13 +88,13 @@ public class ResizableUI : MonoBehaviour
             if (verticalEdge == RectTransform.Edge.Top)
             {
                 float inset = screenRect.height - parent.position.y - parent.pivot.y * parent.rect.height;
-                float size = Mathf.Clamp(parent.rect.height - ped.delta.y, minimumDimmensions.y, maximumDimmensions.y);
+                float size = Mathf.Clamp(parent.rect.height - ped.delta.y, uiComponent.minimumDimmensions.y, uiComponent.maximumDimmensions.y);
                 ResizeFrame((RectTransform.Edge)verticalEdge, inset, size);
             }
             else
             {
                 float inset = parent.position.y - parent.pivot.y * parent.rect.height;
-                float size = Mathf.Clamp(parent.rect.height + ped.delta.y, minimumDimmensions.y, maximumDimmensions.y);
+                float size = Mathf.Clamp(parent.rect.height + ped.delta.y, uiComponent.minimumDimmensions.y, uiComponent.maximumDimmensions.y);
                 ResizeFrame((RectTransform.Edge)verticalEdge, inset, size);
             }
         }
